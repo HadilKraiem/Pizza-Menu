@@ -81,14 +81,29 @@ function Menu() {
         ))}
       </div> */}
 
-      {numPizzas > 0 && (
+      {/* {numPizzas > 0 && (
         <ul className="pizzas">
           {pizzaData.map((pizza) => (
             <Pizza pizzaObj={pizza} key={pizza.name} />
           ))}
         </ul>
-      )}
+      )} */}
 
+      {numPizzas > 0 ? (
+        <>
+          <p>
+            Authentic Italian cuisine. 6 creative dishes to choose from. All
+            from our stone oven, all organic, all delicious.
+          </p>
+          <ul className="pizzas">
+            {pizzaData.map((pizza) => (
+              <Pizza pizzaObj={pizza} key={pizza.name} />
+            ))}
+          </ul>
+        </>
+      ) : (
+        <p>We're still working on our menu. Please come back later :)</p>
+      )}
       {/* <Pizza
         name="Pizza Spinaci"
         ingredients="Tomato, mozarella, spinach, and ricotta cheese"
@@ -116,28 +131,37 @@ function Footer() {
   return (
     <footer className="footer">
       {/* {new Date().toLocaleTimeString()}. We're currently open */}
-      {isOpen && (
-        <div className="order">
-          {" "}
-          <p>
-            We're currently open until {closeHour}:00 . Come visit us or order
-            online.
-          </p>{" "}
-          <button className="btn">Order</button>
-        </div>
+      {isOpen ? (
+        <Order closeHour={closeHour} />
+      ) : (
+        <p>
+          We're happy to welcome you between {openHour}:00 and {closeHour}:00
+        </p>
       )}
     </footer>
   );
   // return React.createElement("footer", null, "We're currently open");
 }
-function Pizza(props) {
+function Order({ closeHour }) {
   return (
-    <li className="pizza">
-      <img src={props.pizzaObj.photoName} alt={props.pizzaObj.name} />
+    <div className="order">
+      {" "}
+      <p>
+        We're currently open until {closeHour}:00 . Come visit us or order
+        online.
+      </p>{" "}
+      <button className="btn">Order</button>
+    </div>
+  );
+}
+function Pizza({ pizzaObj }) {
+  return (
+    <li className={`pizza ${pizzaObj.soldOut ? "sold-out" : ""} `}>
+      <img src={pizzaObj.photoName} alt={pizzaObj.name} />
       <dic>
-        <h3>{props.pizzaObj.name}</h3>
-        <p>{props.pizzaObj.ingredients}</p>
-        <span>{props.pizzaObj.price}</span>
+        <h3>{pizzaObj.name}</h3>
+        <p>{pizzaObj.ingredients}</p>
+        <span>{pizzaObj.soldOut ? "SOLD OUT" : pizzaObj.price}</span>
       </dic>
     </li>
   );
